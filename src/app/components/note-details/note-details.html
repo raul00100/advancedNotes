@@ -1,0 +1,23 @@
+<div
+  class="flex flex-col h-full w-full bg-gray-950 rounded-2xl border-2 border-gray-700 p-3 text-white"
+>
+  @if (addForm) {
+    <h1 class="text-lg font-semibold my-4 mx-auto">Create a new note</h1>
+    <form id="note-details" (ngSubmit)="sendNote()">
+      <input
+        type="text"
+        name="title"
+        placeholder="Title..."
+        [(ngModel)]="noteTitle"
+        class="border-2 border-gray-300 w-full h-12 p-2 rounded-md mb-5"
+      />
+      <textarea
+        type="text"
+        name="content"
+        placeholder="Content..."
+        [(ngModel)]="noteDetails"
+        class="border-2 border-gray-300 w-full h-45 p-2 rounded-md"
+      ></textarea>
+    </form>
+  }
+</div>
