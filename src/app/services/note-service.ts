@@ -21,7 +21,10 @@ export class NoteService {
       createdAt: new Date(),
     };
 
-    await addDoc(notes, newNote);
+    const docRef = await addDoc(notes, newNote);
+
+    // add the note to the list right after it is submitted to the db
+    this._notes.update((current) => [...current, { id: docRef.id, ...newNote }]);
 
     console.log('note was submitted successfully');
   }

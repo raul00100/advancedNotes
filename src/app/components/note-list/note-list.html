@@ -1,10 +1,26 @@
-<div class="h-full w-full bg-gray-900 rounded-2xl border-2 border-gray-700 overflow-auto">
-  @for (note of service.notes(); track note.id) {
-    <article class="m-2 rounded bg-gray-800 p-3 text-white">
-      <h2>{{ note.title }}</h2>
-      <p>{{ note.content }}</p>
-    </article>
-  } @empty {
-    <p class="text-lg text-white font-semibold">The list is empty</p>
-  }
+<div class="h-full w-full bg-gray-900 rounded-2xl border-2 border-gray-700 overflow-auto p-1">
+  <ul class="m-2">
+    @for (note of sortedNotes(); track note.id) {
+      <li
+        class="w-57 h-16 py-2 px-4 text-white transition-colors cursor-pointer border-b has-[+_li.note-selected]:border-b-0"
+        (click)="selectNote(note.id)"
+        [class.bg-amber-600]="holdColor === note.id"
+        [class.border-none]="holdColor === note.id"
+        [class.rounded]="holdColor === note.id"
+        [class.note-selected]="holdColor === note.id"
+      >
+        <h2 class="font-semibold truncate">{{ note.title }}</h2>
+        <p
+          class="text-sm truncate"
+          [class.text-gray-400]="holdColor !== note.id"
+          [class.text-gray-200]="holdColor === note.id"
+        >
+          {{ note.content }}
+        </p>
+        <!-- <div class="w-50 h-[1px] bg-white"></div> -->
+      </li>
+    } @empty {
+      <p class="text-gray-400 font-semibold mx-auto">The list is empty</p>
+    }
+  </ul>
 </div>

@@ -12,8 +12,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class App {
   protected readonly addForm = signal(false);
+  protected readonly selectedNote = signal<string | null>(localStorage.getItem('selectedNote'));
 
-  changeState() {
+  // open the form when the add button is clicked
+  openState() {
     this.addForm.set(true);
+  }
+
+  // close the form when submit button is clicked or when the close button is clicked
+  closeState() {
+    this.addForm.set(false);
+  }
+
+  updateSelected(id: string) {
+    this.selectedNote.set(id);
+    localStorage.setItem('selectedNote', id);
   }
 }

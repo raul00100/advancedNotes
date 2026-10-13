@@ -10,6 +10,7 @@
         placeholder="Title..."
         [(ngModel)]="noteTitle"
         class="border-2 border-gray-300 w-full h-12 p-2 rounded-md mb-5"
+        required
       />
       <textarea
         type="text"
@@ -17,7 +18,14 @@
         placeholder="Content..."
         [(ngModel)]="noteDetails"
         class="border-2 border-gray-300 w-full h-45 p-2 rounded-md"
+        required
       ></textarea>
     </form>
+  } @else if (provideSelected(); as note) {
+    <div class="flex flex-col mx-4">
+      <small class="mx-auto mt-5 mb-7">{{ note.createdAt | date: 'short' }} </small>
+      <h1 class="text-lg font-semibold mb-2">{{ note.title }}</h1>
+      <p class="text-base">{{ note.content }}</p>
+    </div>
   }
 </div>
