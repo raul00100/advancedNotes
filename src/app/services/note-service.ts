@@ -1,6 +1,6 @@
 import { Service, signal } from '@angular/core';
 import { Note } from '../models/note.model';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 @Service()
@@ -41,5 +41,17 @@ export class NoteService {
       };
     });
     this._notes.set(fetched);
+  }
+
+  async deleteNote(id: string): Promise<void> {
+    if (!id) return;
+
+    const noteRef = doc(db, 'notes', id);
+    await deleteDoc(noteRef);
+
+    // updates the list after the note deletion
+    this._notes.update((notes) => notes.filter((note) => note.id !== id));
+
+    console.log('note was deleted successfully');
   }
 }

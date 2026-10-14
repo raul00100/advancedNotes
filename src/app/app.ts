@@ -1,12 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { NoteDetails } from './components/note-details/note-details';
 import { NoteList } from './components/note-list/note-list';
-import { ListHeader } from './components/header/list-header/list-header';
-import { NoteHeader } from './components/header/note-header/note-header';
+import { NoteHeader } from './components/note-header/note-header';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  imports: [NoteDetails, NoteList, ListHeader, NoteHeader, FormsModule],
+  imports: [NoteDetails, NoteList, NoteHeader, FormsModule],
   selector: 'app-root',
   templateUrl: './app.html',
 })
@@ -27,5 +26,10 @@ export class App {
   updateSelected(id: string) {
     this.selectedNote.set(id);
     localStorage.setItem('selectedNote', id);
+  }
+
+  clearSelectedNote() {
+    this.selectedNote.set(null);
+    localStorage.removeItem('selectedNote');
   }
 }

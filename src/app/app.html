@@ -1,15 +1,15 @@
-<main class="flex h-screen w-screen flex-col overflow-hidden bg-black">
-  <!-- HEADERS -->
-  <div class="flex flex-row my-1">
-    <app-list-header class="h-15 w-64 shrink-0 mr-1" (state)="openState()"></app-list-header>
-    <app-note-header class="h-15 w-full" [addForm]="addForm()"></app-note-header>
-  </div>
-  <!-- MAIN CONTENT -->
-  <div class="flex h-full min-h-0 flex-row">
-    <app-note-list
-      class="h-full w-64 shrink-0 mr-1"
-      (selected)="updateSelected($event)"
-    ></app-note-list>
+<main class="flex h-screen w-screen flex-row overflow-hidden bg-black p-1">
+  <app-note-list class="h-full w-65 mr-1" (selected)="updateSelected($event)"></app-note-list>
+
+  <div class="flex flex-col w-full">
+    <app-note-header
+      class="h-15 w-full mb-1"
+      [addForm]="addForm()"
+      [selectedNote]="selectedNote()"
+      (delete)="clearSelectedNote()"
+      (openForm)="openState()"
+      (closeForm)="closeState()"
+    ></app-note-header>
     <app-note-details
       class="h-full w-full"
       [addForm]="addForm()"

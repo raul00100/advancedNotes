@@ -6,7 +6,7 @@
         (click)="selectNote(note.id)"
         [class.bg-amber-600]="holdColor === note.id"
         [class.border-none]="holdColor === note.id"
-        [class.rounded]="holdColor === note.id"
+        [class.rounded-md]="holdColor === note.id"
         [class.note-selected]="holdColor === note.id"
       >
         <h2 class="font-semibold truncate">{{ note.title }}</h2>
@@ -17,7 +17,6 @@
         >
           {{ note.content }}
         </p>
-        <!-- <div class="w-50 h-[1px] bg-white"></div> -->
       </li>
     } @empty {
       <p class="text-gray-400 font-semibold mx-auto">The list is empty</p>
