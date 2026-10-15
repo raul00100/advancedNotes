@@ -1,6 +1,6 @@
 import { Service, signal } from '@angular/core';
 import { Note } from '../models/note.model';
-import { addDoc, collection, getDocs, deleteDoc, doc } from 'firebase/firestore';
+import { addDoc, collection, getDocs, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 @Service()
@@ -53,5 +53,23 @@ export class NoteService {
     this._notes.update((notes) => notes.filter((note) => note.id !== id));
 
     console.log('note was deleted successfully');
+  }
+
+  async editNote(id: string, title: string, content: string): Promise<void> {
+    if (!id || !title.trim() || !content.trim()) return;
+
+    const newNote = {
+      title: title,
+      content: content,
+      createdAt: new Date(), // update the date to the current date when editing the note
+    };
+
+    await updateDoc(doc(db, 'notes', id), newNote);
+
+    this._notes.update((notes) =>
+      notes.map((note) => (note.id === id ? { ...note, ...newNote } : note)),
+    );
+
+    console.log('note was edited successfully');
   }
 }

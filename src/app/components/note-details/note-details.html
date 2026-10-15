@@ -1,8 +1,8 @@
 <div
   class="flex flex-col h-full w-full bg-gray-950 rounded-2xl border-2 border-gray-700 p-3 text-white"
 >
-  @if (addForm) {
-    <h1 class="text-lg font-semibold my-4 mx-auto">Create a new note</h1>
+  @if (addFormState) {
+    <h1 class="text-lg font-semibold my-4 mx-auto">Create a New Note</h1>
     <form id="note-details" (ngSubmit)="sendNote()">
       <input
         type="text"
@@ -21,7 +21,27 @@
         required
       ></textarea>
     </form>
-  } @else if (provideSelected(); as note) {
+  } @else if (editFormState) {
+    <h1 class="text-lg font-semibold my-4 mx-auto">Note Editing</h1>
+    <form id="note-edit" (ngSubmit)="submitEditForm()">
+      <input
+        type="text"
+        name="title"
+        placeholder="Title..."
+        [(ngModel)]="editTitle"
+        class="border-2 border-gray-300 w-full h-12 p-2 rounded-md mb-5"
+        required
+      />
+      <textarea
+        type="text"
+        name="content"
+        placeholder="Content..."
+        [(ngModel)]="editContent"
+        class="border-2 border-gray-300 w-full h-45 p-2 rounded-md"
+        required
+      ></textarea>
+    </form>
+  } @else if (selectedNoteDetails(); as note) {
     <div class="flex flex-col mx-4">
       <small class="mx-auto mt-5 mb-7">{{ note.createdAt | date: 'short' }} </small>
       <h1 class="text-lg font-semibold mb-2">{{ note.title }}</h1>

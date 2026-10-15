@@ -3,20 +3,24 @@ import { NoteService } from '../../services/note-service';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { remixDeleteBin5Line } from '@ng-icons/remixicon';
 import { matAddNotesOutline } from '@ng-icons/material-symbols/outline';
+import { lucideEdit } from '@ng-icons/lucide';
 
 @Component({
   imports: [NgIcon],
-  providers: [provideIcons({ remixDeleteBin5Line, matAddNotesOutline })],
+  providers: [provideIcons({ remixDeleteBin5Line, matAddNotesOutline, lucideEdit })],
   selector: 'app-note-header',
   templateUrl: './note-header.html',
 })
 export class NoteHeader {
-  @Input() addForm: boolean = false;
+  @Input() addFormState: boolean = false;
+  @Input() editFormState: boolean = false;
   @Input() selectedNote: string | null = null;
 
-  @Output() delete = new EventEmitter<void>();
-  @Output() openForm = new EventEmitter<void>();
-  @Output() closeForm = new EventEmitter<void>();
+  @Output() clearSelectedNote = new EventEmitter<void>();
+  @Output() openAddForm = new EventEmitter<void>();
+  @Output() closeAddForm = new EventEmitter<void>();
+  @Output() openEditForm = new EventEmitter<void>();
+  @Output() closeEditForm = new EventEmitter<void>();
 
   constructor(public service: NoteService) {}
 
@@ -29,14 +33,22 @@ export class NoteHeader {
     if (!confirmed) return;
 
     await this.service.deleteNote(this.selectedNote);
-    this.delete.emit();
+    this.clearSelectedNote.emit();
   }
 
-  open(): void {
-    this.openForm.emit();
+  newAddForm(): void {
+    this.openAddForm.emit();
   }
 
-  close(): void {
-    this.closeForm.emit();
+  removeAddForm(): void {
+    this.closeAddForm.emit();
+  }
+
+  addEditForm(): void {
+    this.openEditForm.emit();
+  }
+
+  removeEditForm(): void {
+    this.closeEditForm.emit();
   }
 }

@@ -10,20 +10,21 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly addForm = signal(false);
+  protected readonly addFormState = signal(localStorage.getItem('addForm') === 'true');
+  protected editFormState = signal(localStorage.getItem('editForm') === 'true');
   protected readonly selectedNote = signal<string | null>(localStorage.getItem('selectedNote'));
 
-  // open the form when the add button is clicked
-  openState() {
-    this.addForm.set(true);
+  openAddForm() {
+    this.addFormState.set(true);
+    localStorage.setItem('addForm', 'true');
   }
 
-  // close the form when submit button is clicked or when the close button is clicked
-  closeState() {
-    this.addForm.set(false);
+  closeAddForm() {
+    this.addFormState.set(false);
+    localStorage.setItem('addForm', 'false');
   }
 
-  updateSelected(id: string) {
+  updateSelectedNote(id: string) {
     this.selectedNote.set(id);
     localStorage.setItem('selectedNote', id);
   }
@@ -31,5 +32,15 @@ export class App {
   clearSelectedNote() {
     this.selectedNote.set(null);
     localStorage.removeItem('selectedNote');
+  }
+
+  openEditForm() {
+    this.editFormState.set(true);
+    localStorage.setItem('editForm', 'true');
+  }
+
+  closeEditForm() {
+    this.editFormState.set(false);
+    localStorage.setItem('editForm', 'false');
   }
 }
