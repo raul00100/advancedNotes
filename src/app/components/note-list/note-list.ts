@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { NoteService } from '../../services/note-service';
+import { EventManager } from '@angular/platform-browser';
 
 @Component({
   imports: [],
@@ -7,12 +8,21 @@ import { NoteService } from '../../services/note-service';
   templateUrl: './note-list.html',
 })
 export class NoteList {
-  @Output() selected = new EventEmitter<string>();
-  public holdColor: string | null = localStorage.getItem('selectedNote');
+  @Output() selectedNote = new EventEmitter<string>();
+  @Output() closeForm = new EventEmitter<void>();
+
+  public saveSelectedNote: string | null = localStorage.getItem('selectedNote');
+  loadError = '';
+
   constructor(private service: NoteService) {}
 
-  ngOnInit(): void {
-    void this.service.getNotes();
+  async ngOnInit(): Promise<void> {
+    try {
+      await this.service.getNotes();
+    } catch (error: unknown) {
+      console.error('failed to fetch the notes', error);
+      this.loadError = 'failed to fetch the notes';
+    }
   }
 
   // sort the notes by createdAt date in descending order
@@ -21,7 +31,9 @@ export class NoteList {
   }
 
   selectNote(id: string) {
-    this.holdColor = id;
-    this.selected.emit(id);
+    this.saveSelectedNote = id;
+    this.selectedNote.emit(id);
+
+    this.closeForm.emit(); // close active form when clicking on a note from the list
   }
 }

@@ -1,25 +1,29 @@
 <div class="h-full w-full bg-gray-900 rounded-2xl border-2 border-gray-700 overflow-auto p-1">
-  <ul class="m-2">
-    @for (note of sortedNotes(); track note.id) {
-      <li
-        class="w-50 h-16 py-2 px-4 text-white transition-colors cursor-pointer border-b has-[+_li.note-selected]:border-b-0"
-        (click)="selectNote(note.id)"
-        [class.bg-amber-600]="holdColor === note.id"
-        [class.border-none]="holdColor === note.id"
-        [class.rounded-md]="holdColor === note.id"
-        [class.note-selected]="holdColor === note.id"
-      >
-        <h2 class="font-semibold truncate">{{ note.title }}</h2>
-        <p
-          class="text-sm truncate"
-          [class.text-gray-400]="holdColor !== note.id"
-          [class.text-gray-200]="holdColor === note.id"
+  @if (loadError) {
+    <p class="text-red-500 text-lg">{{ loadError }}</p>
+  } @else {
+    <ul class="m-2">
+      @for (note of sortedNotes(); track note.id) {
+        <li
+          class="w-50 h-16 py-2 px-4 text-white transition-colors cursor-pointer border-b has-[+_li.note-selected]:border-b-0"
+          (click)="selectNote(note.id)"
+          [class.bg-amber-600]="saveSelectedNote === note.id"
+          [class.border-none]="saveSelectedNote === note.id"
+          [class.rounded-md]="saveSelectedNote === note.id"
+          [class.note-selected]="saveSelectedNote === note.id"
         >
-          {{ note.content }}
-        </p>
-      </li>
-    } @empty {
-      <p class="text-gray-400 font-semibold mx-auto">The list is empty</p>
-    }
-  </ul>
+          <h2 class="font-semibold truncate">{{ note.title }}</h2>
+          <p
+            class="text-sm truncate"
+            [class.text-gray-400]="saveSelectedNote !== note.id"
+            [class.text-gray-200]="saveSelectedNote === note.id"
+          >
+            {{ note.content }}
+          </p>
+        </li>
+      } @empty {
+        <p class="text-gray-400 font-semibold mx-auto">The list is empty</p>
+      }
+    </ul>
+  }
 </div>

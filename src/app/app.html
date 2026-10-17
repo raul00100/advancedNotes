@@ -1,5 +1,10 @@
 <main class="flex h-screen w-screen flex-row overflow-hidden bg-black p-1">
-  <app-note-list class="h-full w-65 mr-1" (selected)="updateSelectedNote($event)"></app-note-list>
+  <app-note-list
+    class="h-full w-65 mr-1"
+    (selectedNote)="updateSelectedNote($event)"
+    (closeForm)="closeAddForm()"
+    (closeForm)="closeEditForm()"
+  ></app-note-list>
 
   <div class="flex flex-col w-full">
     <app-note-header

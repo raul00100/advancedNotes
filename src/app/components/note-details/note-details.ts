@@ -16,11 +16,11 @@ export class NoteDetails {
   @Output() closeAddForm = new EventEmitter<void>();
   @Output() closeEditForm = new EventEmitter<void>();
 
-  public editTitle = '';
-  public editContent = '';
-
-  private noteTitle: string = '';
-  private noteDetails: string = '';
+  editTitle = '';
+  editContent = '';
+  noteTitle: string = '';
+  noteDetails: string = '';
+  submitted = false;
 
   private _editedNote = false;
   @Input() set editFormState(value: boolean) {
@@ -34,15 +34,24 @@ export class NoteDetails {
 
   constructor(public service: NoteService) {}
 
-  async sendNote() {
+  async sendNote(): Promise<void> {
+    this.submitted = true;
+
     if (!this.noteTitle.trim() || !this.noteDetails.trim()) return;
-    await this.service.addNote(this.noteTitle, this.noteDetails);
 
-    // reset the value after submitting the form
-    this.noteTitle = '';
-    this.noteDetails = '';
+    try {
+      await this.service.addNote(this.noteTitle, this.noteDetails);
 
-    this.closeAddForm.emit();
+      // reset the value after submitting the form
+      this.noteTitle = '';
+      this.noteDetails = '';
+      this.submitted = false; // reset the state of an error message
+
+      this.closeAddForm.emit(); // close the form after submission
+    } catch (error: unknown) {
+      console.error('failed to add note', error);
+      alert('failed to add note');
+    }
   }
 
   selectedNoteDetails(): Note | undefined {
@@ -62,11 +71,20 @@ export class NoteDetails {
     this.editContent = data.content;
   }
 
-  submitEditForm() {
-    if (this.selectedNote === null) return;
+  async submitEditForm(): Promise<void> {
+    this.submitted = true;
 
-    this.service.editNote(this.selectedNote, this.editTitle, this.editContent);
+    if (this.selectedNote === null || !this.editTitle.trim() || !this.editContent.trim()) return;
 
-    this.closeEditForm.emit();
+    try {
+      await this.service.editNote(this.selectedNote, this.editTitle, this.editContent);
+
+      this.submitted = false; // reset the state of an error message
+
+      this.closeEditForm.emit(); //close the form after submission
+    } catch (error: unknown) {
+      console.error('failed to update note', error);
+      alert('failed to update note');
+    }
   }
 }

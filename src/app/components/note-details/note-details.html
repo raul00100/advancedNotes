@@ -2,44 +2,58 @@
   class="flex flex-col h-full w-full bg-gray-950 rounded-2xl border-2 border-gray-700 p-3 text-white"
 >
   @if (addFormState) {
-    <h1 class="text-lg font-semibold my-4 mx-auto">Create a New Note</h1>
-    <form id="note-details" (ngSubmit)="sendNote()">
+    <form id="note-details" (ngSubmit)="sendNote()" novalidate>
       <input
         type="text"
         name="title"
         placeholder="Title..."
         [(ngModel)]="noteTitle"
-        class="border-2 border-gray-300 w-full h-12 p-2 rounded-md mb-5"
+        (input)="submitted = false"
+        class="border-2 border-gray-300 w-full h-12 p-2 rounded-md focus:outline-none focus:ring-2 transition-all duration-250"
         required
       />
+      @if (submitted && !noteTitle.trim()) {
+        <p class="text-red-400">This field is required!</p>
+      }
       <textarea
         type="text"
         name="content"
         placeholder="Content..."
         [(ngModel)]="noteDetails"
-        class="border-2 border-gray-300 w-full h-45 p-2 rounded-md"
+        (input)="submitted = false"
+        class="border-2 border-gray-300 w-full h-85 p-2 rounded-md mt-5 focus:outline-none focus:ring-2 transition-all duration-250"
         required
       ></textarea>
+      @if (submitted && !noteDetails.trim()) {
+        <p class="text-red-400">This field is required!</p>
+      }
     </form>
   } @else if (editFormState) {
-    <h1 class="text-lg font-semibold my-4 mx-auto">Note Editing</h1>
-    <form id="note-edit" (ngSubmit)="submitEditForm()">
+    <form id="note-edit" (ngSubmit)="submitEditForm()" novalidate>
       <input
         type="text"
         name="title"
         placeholder="Title..."
         [(ngModel)]="editTitle"
-        class="border-2 border-gray-300 w-full h-12 p-2 rounded-md mb-5"
+        (input)="submitted = false"
+        class="border-2 border-gray-300 w-full h-12 p-2 rounded-md focus:outline-none focus:ring-2 transition-all duration-250"
         required
       />
+      @if (submitted && !editTitle.trim()) {
+        <p class="text-red-400">This field is required!</p>
+      }
       <textarea
         type="text"
         name="content"
         placeholder="Content..."
         [(ngModel)]="editContent"
-        class="border-2 border-gray-300 w-full h-45 p-2 rounded-md"
+        (input)="submitted = false"
+        class="border-2 border-gray-300 w-full h-85 p-2 rounded-md mt-5 focus:outline-none focus:ring-2 transition-all duration-250"
         required
       ></textarea>
+      @if (submitted && !editContent.trim()) {
+        <p class="text-red-400">This field is required!</p>
+      }
     </form>
   } @else if (selectedNoteDetails(); as note) {
     <div class="flex flex-col mx-4">

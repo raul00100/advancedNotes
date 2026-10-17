@@ -32,8 +32,14 @@ export class NoteHeader {
     );
     if (!confirmed) return;
 
-    await this.service.deleteNote(this.selectedNote);
-    this.clearSelectedNote.emit();
+    try {
+      await this.service.deleteNote(this.selectedNote);
+
+      this.clearSelectedNote.emit(); // reset the selected note after deleting it
+    } catch (error: unknown) {
+      console.error('failed to delete note', error);
+      alert('failed to delete note');
+    }
   }
 
   newAddForm(): void {
